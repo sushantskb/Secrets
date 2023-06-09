@@ -1,4 +1,5 @@
 //jshint esversion:6
+require("dotenv").config();
 const express = require('express');
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -21,8 +22,8 @@ const userSchema = new mongoose.Schema({
 });
 
 //code of encryption
-const secret = "privacy";
-userSchema.plugin(encrypt,{secret: secret, encryptedFields: ["password"]});
+// const secret = "privacy";
+userSchema.plugin(encrypt,{secret: process.env.SECRET, encryptedFields: ["password"]});
 
 //mongoose model
 const User = mongoose.model("User",userSchema);
@@ -72,7 +73,7 @@ app.post("/login", (req, res)=>{
 });
 
 app.get("/logout",(req, res)=>{
-    res.render("home");
+    res.redirect("/");
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
